@@ -1,86 +1,41 @@
-# Guía de Instalación y Configuración (Vía NPM)
+# Guía de Instalación y Uso (Vía NPX)
 
-Esta guía explica cómo instalar y configurar la herramienta **SemVerAITool** globalmente en tu equipo utilizando el ecosistema nativo de NPM, diseñado para equipos que utilizan Node.js.
+Esta herramienta está diseñada al estilo de Shadcn/Next.js: **cero instalaciones globales**. Puedes ejecutarla en cualquier momento desde tu terminal local.
 
 ## 1. Requisitos Previos
 
-1.  Tener instalado **Node.js** (v16+) y **NPM**.
-2.  Tener acceso de lectura al repositorio Git de tu empresa donde está alojado este código.
-3.  Tener una **API Key** de [Groq Cloud](https://console.groq.com/).
+1.  Tener instalado **Node.js** y **NPM** (viene con `npx`).
+2.  Tener una **API Key** de [Groq Cloud](https://console.groq.com/).
 
 ---
 
-## 2. Instalación Global
-
-La herramienta se distribuye directamente desde el repositorio privado/público usando NPM sin necesidad de registros externos ni compilar binarios y variables de entorno manualmente.
-
-Abre la terminal de tu computadora y ejecuta el comando de instalación apuntando a este repositorio. 
-*(Si tu empresa usa SSH o HTTPS, reemplaza la URL correspondiente)*:
-
-```bash
-npm install -g git+ssh://git@github.com:TuOrganizacion/semver-ai-tool.git
-```
-
-> **Nota:** Al usar el flag `-g`, NPM creará los ejecutables globalmente en tu computadora. A partir de ahora tendrás acceso al comando `semver-ai` en cualquier lugar de tu sistema.
-
----
-
-## 3. Configuración de Credenciales de IA (Una Sola Vez)
-
-Para evitar filtrar las API Keys en los archivos `.env` de cada proyecto individual, **SemVerAITool** utiliza un almacenamiento global ultra seguro ubicado en el directorio de tu usuario del sistema operativo (Home).
-
-Debes crear un archivo de credenciales en tu máquina **una sola vez**:
-
-### En Windows
-1. Ve a tu carpeta de usuario: `C:\Users\TuNombreDeUsuario`
-2. Crea una carpeta llamada `.semver-ai` (Nota: empieza con un punto).
-3. Dentro de esa carpeta, crea un archivo llamado `credentials.env`.
-
-### En Mac / Linux / WSL
-Abre la terminal de bash y ejecuta:
-```bash
-mkdir -p ~/.semver-ai
-touch ~/.semver-ai/credentials.env
-```
-
-### Contenido del archivo `credentials.env`
-
-Abre ese archivo con cualquier editor de texto (VS Code, Notepad, Vim) y pega lo siguiente, agregando tus datos reales:
-
-```env
-GROQ_API_KEY="gsk_AquiVaTuClaveSecretaDeGroq"
-GROQ_MODEL="llama-3.1-70b-versatile"
-GROQ_URL="https://api.groq.com/openai/v1/chat/completions"
-
-AUTHOR_NAME="Gonzalo S. A. Gomez"
-```
-
-✅ **¡Listo! Nunca más tendrás que tocar contraseñas.**
-
----
-
-## 4. Uso en tus Proyectos Diarios
+## 2. Uso en tus Proyectos (Flujo Interactivo)
 
 Ve a cualquier carpeta de tu computadora donde estés trabajando en un proyecto Node.js (`package.json`) y sigue estos pasos:
 
-### Paso 4.1: Inicializar
-Ejecuta el comando para inicializar la herramienta en ese proyecto (creará el `.semver-ai.json`):
-```bash
-semver-ai init
-```
-*(Sigue los pasos y nombra tu proyecto).*
+### Paso 2.1: Inicializar el proyecto y Credenciales
+Ejecuta el siguiente comando directamente (sin instalar nada antes):
 
-### Paso 4.2: Programa y Guardar Cambios (Commits)
+```bash
+npx github:gonzalogomezprojects/semver-ai-tool init
+```
+
+*Si es tu primera vez:* La herramienta mostrará un asistente interactivo en la consola preguntando por tu API Key de Groq.
+¡Y hará la magia sola! Crearál archivo `.semver-ai\credentials.env` en tu computadora de forma segura. NUNCA más te lo volverá a preguntar en ningún otro proyecto.
+
+*(Luego te preguntará el nombre del proyecto y creará el `.semver-ai.json`).*
+
+### Paso 2.2: Programa y Guardar Cambios (Commits)
 Programa tus tareas normalmente y, cuando termines, usa Conventional Commits:
 ```bash
 git add .
-git commit -m "feat(auth): implementar sistema JWT y bloquear endpoints"
+git commit -m "feat(auth): implement JWT system and block endpoints"
 ```
 
-### Paso 4.3: Liberar versión (IA Magic ✨)
+### Paso 2.3: Liberar versión (IA Magic ✨)
 Cuando estés listo para liberar una versión, simplemente ejecuta:
 ```bash
-semver-ai release
+npx github:gonzalogomezprojects/semver-ai-tool release
 ```
 
 **¿Qué hará la herramienta?**

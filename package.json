@@ -1,6 +1,6 @@
 {
   "name": "semver-ai-tool",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Una herramienta CLI con IA para Conventional Commits que automatiza versionado y documentación.",
   "main": "src/cli.sh",
   "bin": {

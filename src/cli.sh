@@ -26,7 +26,13 @@ show_help() {
     echo "  help      Show this help interface."
 }
 
+VERSION=$(node -p "require('$SEMVER_AI_DIR/package.json').version")
+
 case "$COMMAND" in
+    "--version"|"-v")
+        echo "SemVer AI Tool v$VERSION"
+        exit 0
+        ;;
     init)
         bash "$SEMVER_AI_DIR/src/commands/init.sh" "$@"
         ;;

@@ -58,7 +58,9 @@ if ! grep -q "$CONFIG_FILE" "$GITIGNORE"; then
     echo "" >> "$GITIGNORE"
     echo "# SemVer AI Tool Configuration (contains sensitive API Key)" >> "$GITIGNORE"
     echo "$CONFIG_FILE" >> "$GITIGNORE"
-    echo "✅ Success: added $CONFIG_FILE to $GITIGNORE for security."
+    # Security: Remove from git index if it was accidentally added before gitignore
+    git rm --cached "$CONFIG_FILE" > /dev/null 2>&1 || true
+    echo "✅ Success: added $CONFIG_FILE to $GITIGNORE and removed from git cache."
 fi
 
 echo "Done! Configuration saved at $CONFIG_FILE."

@@ -1,0 +1,14 @@
+# Node
+node_modules/
+npm-debug.log
+
+# Tool Configuration (contains sensitive API Key)
+.semver-ai.json
+
+# Credentials legacy
+.semver-ai/
+credentials.env
+
+# System
+.DS_Store
+Thumbs.db

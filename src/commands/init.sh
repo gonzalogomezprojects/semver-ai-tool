@@ -35,7 +35,7 @@ if [ ! -f "$CRED_FILE" ]; then
     
     cat <<ENV_EOF > "$CRED_FILE"
 GROQ_API_KEY="$groq_api_key"
-GROQ_MODEL="llama-3.1-70b-versatile"
+GROQ_MODEL="llama-3.3-70b-versatile"
 GROQ_URL="https://api.groq.com/openai/v1/chat/completions"
 
 AUTHOR_NAME="$author_name"

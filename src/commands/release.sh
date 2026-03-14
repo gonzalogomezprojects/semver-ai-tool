@@ -44,7 +44,8 @@ release_notes=$(generate_release_notes "$next_version" "$bump_type" "$commit_msg
 
 # Save document
 mkdir -p "$PROJECT_DOCS_DIR"
-now=$(date +%Y%m%d_%H%M)
+# Format: v1.1.0-14-March-2026_13-45.md
+now=$(date +"%d-%B-%Y_%H-%M")
 doc_file="$PROJECT_DOCS_DIR/release_v${next_version}_${now}.md"
 echo "$release_notes" > "$doc_file"
 

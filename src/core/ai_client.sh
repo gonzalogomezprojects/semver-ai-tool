@@ -8,8 +8,11 @@ generate_release_notes() {
     local diff="$4"
     
     local curr_date=$(date +%Y-%m-%d)
-    
-    local prompt="Act strictly as a Senior Technical Writer for a software engineering team.
+    local lang_name="English"
+    [ "$RELEASE_LANGUAGE" = "es" ] && lang_name="Spanish"
+
+    local prompt="Act strictly as a Senior Technical Writer. 
+CRITICAL: You MUST write the entire response in $lang_name.
 Generate release notes for version $version.
 
 ## Context

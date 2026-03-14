@@ -15,6 +15,13 @@ echo "Enter your project name:"
 printf "> "
 read project_name
 
+echo "Preferred language for AI Release Notes? (es/en):"
+printf "> "
+read release_lang
+
+# Ensure default if empty
+release_lang=${release_lang:-en}
+
 echo "Enter your Author Name (for release notes):"
 printf "> "
 read author_name
@@ -24,15 +31,19 @@ echo "Please paste your Groq API Key (starts with gsk_):"
 printf "> "
 read groq_api_key
 
+DEFAULT_GROQ_URL="https://api.groq.com/openai/v1/chat/completions"
+echo "Using default Groq API Endpoint: $DEFAULT_GROQ_URL"
+
 # JSON Configuration with credentials embedded
 cat <<EOF > "$CONFIG_FILE"
 {
   "project_name": "$project_name",
   "author_name": "$author_name",
+  "release_language": "$release_lang",
   "docs_dir": "docs/releases",
   "groq_api_key": "$groq_api_key",
   "groq_model": "llama-3.3-70b-versatile",
-  "groq_url": "https://api.groq.com/openai/v1/chat/completions"
+  "groq_url": "$DEFAULT_GROQ_URL"
 }
 EOF
 

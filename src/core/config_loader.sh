@@ -13,6 +13,7 @@ load_project_config() {
     export PROJECT_NAME=$(node -p "require('./' + '$config_file').project_name || 'unknown'")
     export PROJECT_DOCS_DIR=$(node -p "require('./' + '$config_file').docs_dir || 'docs/releases'")
     export AUTHOR_NAME=$(node -p "require('./' + '$config_file').author_name || 'unknown'")
+    export RELEASE_LANGUAGE=$(node -p "require('./' + '$config_file').release_language || 'en'")
     
     # Credentials (Also from JSON now)
     export GROQ_API_KEY=$(node -p "require('./' + '$config_file').groq_api_key || ''")

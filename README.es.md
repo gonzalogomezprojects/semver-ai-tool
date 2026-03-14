@@ -37,5 +37,9 @@ npx github:gonzalogomezprojects/semver-ai-tool release
 ## 📚 Documentación Técnica
 Para una comprensión profunda de la lógica interna, consulta nuestra [Arquitectura Técnica](./src/docs/es/technical-architecture.md).
 
+## 👨‍💻 Autor
+Desarrollado con ❤️ por **Gonzalo S. A. Gómez**.  
+Conéctate conmigo en [LinkedIn](https://www.linkedin.com/in/gonzalogomezprojects/).
+
 ## 📄 Licencia
 MIT License

@@ -37,5 +37,9 @@ npx github:gonzalogomezprojects/semver-ai-tool release
 ## 📚 Technical Documentation
 For a deep dive into the inner logic and architecture, see [Technical Architecture](./src/docs/en/technical-architecture.md).
 
+## 👨‍💻 Author
+Developed with ❤️ by **Gonzalo S. A. Gómez**.  
+Connect with me on [LinkedIn](https://www.linkedin.com/in/gonzalogomezprojects/).
+
 ## 📄 License
 MIT License

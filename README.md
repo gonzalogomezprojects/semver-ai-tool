@@ -1,6 +1,10 @@
+<p align="center">
+  <img src="src/images/logo-semveraitool.png" alt="SemVer AI Tool Logo" width="300">
+</p>
+
 # SemVer AI Tool
 
-**SemVer AI Tool** is a command-line interface (CLI) tool that automates semantic versioning and release notes generation using Artificial Intelligence and Conventional Commits. 
+**SemVer AI Tool** is a next-generation command-line interface (CLI) tool that automates semantic versioning and professional release notes generation using Artificial Intelligence and Conventional Commits.
 
 Built with software engineering best practices, this tool ensures global setup without tampering with system-level paths (like Windows `System32`), operates securely with local user credentials, and maintains highly modular architecture.
 

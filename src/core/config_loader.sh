@@ -9,20 +9,23 @@ load_project_config() {
         exit 1
     fi
     
-    # We parse the file using node securely
+    # Extract everything from the local JSON securely using node
     export PROJECT_NAME=$(node -p "require('./' + '$config_file').project_name || 'unknown'")
     export PROJECT_DOCS_DIR=$(node -p "require('./' + '$config_file').docs_dir || 'docs/releases'")
-}
+    export AUTHOR_NAME=$(node -p "require('./' + '$config_file').author_name || 'unknown'")
+    
+    # Credentials (Also from JSON now)
+    export GROQ_API_KEY=$(node -p "require('./' + '$config_file').groq_api_key || ''")
+    export GROQ_MODEL=$(node -p "require('./' + '$config_file').groq_model || 'llama-3.3-70b-versatile'")
+    export GROQ_URL=$(node -p "require('./' + '$config_file').groq_url || 'https://api.groq.com/openai/v1/chat/completions'")
 
-load_credentials() {
-    local cred_file="$HOME/.semver-ai/credentials.env"
-    if [ ! -f "$cred_file" ]; then
-        echo "Error: Global credentials not found at $cred_file."
-        echo "Please create it with your GROQ_API_KEY."
+    if [ -z "$GROQ_API_KEY" ]; then
+        echo "Error: Missing groq_api_key in $config_file."
         exit 1
     fi
-    # Use allexport securely to pull env variables into current context session
-    set -o allexport
-    source "$cred_file"
-    set +o allexport
+}
+
+# load_credentials is now a no-op as everything is in the project config
+load_credentials() {
+    return 0
 }

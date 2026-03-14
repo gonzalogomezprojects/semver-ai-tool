@@ -10,7 +10,6 @@ source "$SEMVER_AI_DIR/src/core/ai_client.sh"
 
 echo "[1/4] Loading configurations..."
 load_project_config
-load_credentials
 
 echo "[2/4] Analyzing repository state..."
 commit_msg=$(get_last_commit_message)

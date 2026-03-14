@@ -13,17 +13,20 @@ This tool is designed in the style of Shadcn/Next.js: **zero global installation
 
 Go to any folder on your computer where you are working on a Node.js project (`package.json`) and follow these steps:
 
-### Step 2.1: Initialize project and Credentials
+### Step 2.1: Initialize the project
 Run the following command directly (without installing anything beforehand):
 
 ```bash
 npx github:gonzalogomezprojects/semver-ai-tool init
 ```
 
-*If it's your first time:* The tool will show an interactive wizard in the console asking for your Groq API Key.
-And it will do the magic alone! It will create the `.semver-ai/credentials.env` file on your computer securely. It will NEVER ask you for it again in any other project.
+The tool will interactively ask for:
+1. Your project name.
+2. Your name as Author.
+3. Your **Groq API Key**.
 
-*(Then it will ask for the project name and create the `.semver-ai.json`).*
+And that's it! Everything will be stored in a local `.semver-ai.json` file.
+**Automatic Security**: The tool will automatically add `.semver-ai.json` to your `.gitignore` so your API Key is never pushed to the repository.
 
 ### Step 2.2: Code and Save Changes (Commits)
 Code your tasks normally and, when finished, use Conventional Commits:

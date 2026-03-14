@@ -32,35 +32,45 @@ $diff
 4. Do NOT output XML tags like <think>, only the markdown content."
 
     # Construct JSON payload utilizing Node mapping arguments safely
-    local payload=$(PROMPT="$prompt" node -e "
-      console.log(JSON.stringify({
-        model: process.env.GROQ_MODEL || 'llama-3.1-70b-versatile',
+    # We use export to ensure complex strings (with backticks/newlines) are handled correctly by Node's process.env
+    export AI_PROMPT_CONTENT="$prompt"
+    export AI_MODEL_NAME="${GROQ_MODEL:-llama-3.3-70b-versatile}"
+    
+    local payload=$(node -e "
+      const data = {
+        model: process.env.AI_MODEL_NAME,
         messages: [
             {role: 'system', content: 'You are an expert technical documenter and analyst.'},
-            {role: 'user', content: process.env.PROMPT}
+            {role: 'user', content: process.env.AI_PROMPT_CONTENT}
         ],
         temperature: 0.2
-      }));
+      };
+      console.log(JSON.stringify(data));
     ")
         
     local response=$(curl -sS --max-time 45 "$GROQ_URL" \
         -H "Authorization: Bearer $GROQ_API_KEY" \
         -H "Content-Type: application/json" \
-        -d "$payload" || echo "{\"error\": {\"message\": \"Network or Curl Error\"}}")
+        -d "$payload" || echo "{\"error\": {\"message\": \"Network or Connection Error\"}}")
         
     # Extract content or error message using Node.js for robustness
     export AI_RESPONSE_RAW="$response"
     local content=$(node -e "
       try {
+        if (!process.env.AI_RESPONSE_RAW) throw new Error('Empty response');
         const data = JSON.parse(process.env.AI_RESPONSE_RAW);
         if (data.error) {
-          process.stderr.write('Groq API Error: ' + (data.error.message || 'Unknown error') + '\n');
-          process.exit(0);
+          process.stderr.write('Groq API Error: ' + (data.error.message || JSON.stringify(data.error)) + '\n');
+          process.exit(1);
+        }
+        if (!data.choices || !data.choices[0]) {
+           process.stderr.write('Invalid API Response Structure\n');
+           process.exit(1);
         }
         let txt = data.choices[0].message.content || '';
-        // Clean thinking tags (multi-line)
-        txt = txt.replace(/<think>[\s\S]*?<\/think>/g, '');
-        process.stdout.write(txt.trim());
+        // Clean thinking tags (multi-line) and redundant whitespace
+        txt = txt.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+        process.stdout.write(txt);
       } catch(e) {
         process.stderr.write('AI API Response Parsing Failed\n');
       }

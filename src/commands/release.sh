@@ -12,14 +12,21 @@ echo "[1/4] Loading configurations..."
 load_project_config
 
 echo "[2/4] Analyzing repository state..."
+# Priority: 1. Manual argument | 2. Auto-detection
+manual_bump="$1"
 commit_msg=$(get_last_commit_message)
-bump_type=$(determine_bump_type "$commit_msg")
 
-echo "  -> Last commit: \"$commit_msg\""
-echo "  -> Detected change type: $bump_type"
+if [ -n "$manual_bump" ] && [[ "$manual_bump" =~ ^(patch|minor|major)$ ]]; then
+    bump_type="$manual_bump"
+    echo "  -> Manual override detected: $bump_type"
+else
+    bump_type=$(determine_bump_type "$commit_msg")
+    echo "  -> Last commit: \"$commit_msg\""
+    echo "  -> Detected change type: $bump_type"
+fi
 
 if [ "$bump_type" = "none" ]; then
-    echo "⚠️  No valid conventional commit (feat, fix, BREAKING CHANGE) detected."
+    echo "⚠️  No valid conventional commit (feat, fix, BREAKING CHANGE) detected and no manual override provided."
     echo "Skipping release process."
     exit 0
 fi

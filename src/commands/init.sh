@@ -44,7 +44,7 @@ cat <<EOF > "$CONFIG_FILE"
   "groq_api_key": "$groq_api_key",
   "groq_model": "llama-3.3-70b-versatile",
   "groq_url": "$DEFAULT_GROQ_URL",
-  "tech_docs_url": "https://github.com/gonzalogomezprojects/semver-ai-tool/blob/main/src/docs/es/technical-architecture.md"
+  "tech_docs_url": "https://github.com/gonzalogomezprojects/semver-ai-tool/blob/main/docs/${release_lang}/technical-architecture.md"
 }
 EOF
 

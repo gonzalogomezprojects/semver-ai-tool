@@ -34,8 +34,9 @@ After committing your changes, trigger the AI release process:
 npx github:gonzalogomezprojects/semver-ai-tool release
 ```
 
-## 📚 Technical Documentation
-For a deep dive into the inner logic and architecture, see [Technical Architecture](./src/docs/en/technical-architecture.md).
+## 📚 Documentation
+- **[Usage Guide & Workflow](./docs/en/usage-guide.md)**: Learn how to use the tool correctly and understand the flow.
+- **[Technical Architecture](./docs/en/technical-architecture.md)**: Deep dive into the inner logic and architecture.
 
 ## 👨‍💻 Author
 Developed with ❤️ by **Gonzalo S. A. Gómez** on [Sarit Startup](https://saritstartup.com.ar/).  

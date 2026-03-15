@@ -34,8 +34,9 @@ Una vez que hayas hecho tus commits siguiendo la convención, lanza la magia:
 npx github:gonzalogomezprojects/semver-ai-tool release
 ```
 
-## 📚 Documentación Técnica
-Para una comprensión profunda de la lógica interna, consulta nuestra [Arquitectura Técnica](./src/docs/es/technical-architecture.md).
+## 📚 Documentación
+- **[Guía de Uso y Flujo](./docs/es/guia-uso.md)**: Aprende cómo utilizar la herramienta correctamente y entiende el flujo.
+- **[Arquitectura Técnica](./docs/es/technical-architecture.md)**: Para una comprensión profunda de la lógica interna.
 
 ## 👨‍💻 Autor
 Desarrollado con ❤️ por **Gonzalo S. A. Gómez** en [Sarit Startup](https://saritstartup.com.ar/).  

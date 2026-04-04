@@ -21,8 +21,7 @@ load_project_config() {
     export GROQ_URL=$(node -p "require('./' + '$config_file').groq_url || 'https://api.groq.com/openai/v1/chat/completions'")
 
     if [ -z "$GROQ_API_KEY" ]; then
-        echo "Error: Missing groq_api_key in $config_file."
-        exit 1
+        echo "  -> Note: No Groq API Key found. Skipping AI features."
     fi
 }
 

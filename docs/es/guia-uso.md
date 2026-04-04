@@ -25,13 +25,14 @@ npx github:gonzalogomezprojects/semver-ai-tool init
 *   **Resultado**: Se crea un archivo `.semver-ai.json`. La herramienta lo agrega automáticamente a tu `.gitignore` para evitar fugas de tu clave API.
 
 ### 2. Desarrollo y Conventional Commits
-Mientras desarrollas, debes usar el estándar de **Conventional Commits** para tus mensajes de commit. La herramienta utiliza el *último commit* para determinar el salto de versión.
+Mientras desarrollas, debes usar el estándar de **Conventional Commits** para tus mensajes de commit. **SemVer AI Tool** analiza **todos los commits** desde tu último lanzamiento (tag) para determinar el salto de versión óptimo.
 
 | Prefijo de Commit | Salto SemVer | Descripción |
 | :--- | :--- | :--- |
 | `fix:` | **Patch** (0.0.x) | Corrección de errores. |
 | `feat:` | **Minor** (0.x.0) | Nuevas funcionalidades. |
-| `BREAKING CHANGE:` | **Major** (x.0.0) | Cambios que rompen la compatibilidad. |
+| `feat!:` / `fix!:` | **Major** (x.0.0) | Cambios que rompen compatibilidad (con indicador `!`). |
+| `BREAKING CHANGE:` | **Major** (x.0.0) | Cambios que rompen la compatibilidad en el cuerpo del commit. |
 
 **Ejemplo:**
 ```bash
@@ -46,39 +47,39 @@ npx github:gonzalogomezprojects/semver-ai-tool release
 ```
 
 *   **Lógica**:
-    1.  **Análisis**: Lee el último mensaje de commit.
-    2.  **Versionado**: Calcula si es un salto `patch`, `minor` o `major`.
+    1.  **Análisis**: Escanea el historial de Git desde el **último tag** hasta el estado actual.
+    2.  **Versionado**: Calcula el salto de mayor prioridad (`major` > `minor` > `patch`) detectado en el rango.
     3.  **Actualización**: Actualiza el campo `version` en tu `package.json`.
-    4.  **Poder de IA**: Envía el mensaje de commit y el diff del código real a la IA.
-    5.  **Documentación**: Genera un archivo Markdown profesional en `docs/releases/`.
+    4.  **Poder de IA**: Envía el historial acumulado y el diff total a la IA para una síntesis profesional.
+    5.  **Documentación**: Genera un archivo Markdown en `docs/releases/`.
+    6.  **Persistencia**: Crea automáticamente un **commit de git** y un **tag de versión**.
 
 ---
 
 ## 🛠️ Uso Avanzado
 
 ### Sobrescritura Manual de Versión
-Si deseas forzar un salto específico independientemente del mensaje de commit, puedes pasar un argumento:
+Si deseas forzar un salto específico independientemente del historial, puedes pasar un argumento:
 
 ```bash
 # Forzar un salto de versión Major
 npx github:gonzalogomezprojects/semver-ai-tool release major
-
-# Forzar un salto de versión Minor
-npx github:gonzalogomezprojects/semver-ai-tool release minor
-
-# Forzar un salto de versión Patch
-npx github:gonzalogomezprojects/semver-ai-tool release patch
 ```
 
-### Seguridad y Credenciales
-La herramienta almacena tu API Key de Groq en `.semver-ai.json` dentro de la raíz de tu proyecto.
-> [!IMPORTANT]
-> Asegúrate siempre de que `.semver-ai.json` esté en tu `.gitignore`. El comando `init` lo hace automáticamente por ti.
+### Persistencia y Seguridad
+Al finalizar una release con éxito, la herramienta:
+1.  Prepara (`stage`) el `package.json`, `package-lock.json` (si existe) y la nueva nota de release.
+2.  Realiza un commit con el mensaje `chore(release): vX.Y.Z [skip ci]`.
+3.  Etiqueta (tag) el commit como `vX.Y.Z`.
+
+> [!TIP]
+> Tras el comando, recuerda ejecutar `git push --follow-tags` para subir la nueva versión a tu repositorio remoto.
 
 ---
 
 ## 💡 Mejores Prácticas
 
-1.  **Commits Atómicos**: Intenta incluir una sola funcionalidad o corrección por commit si quieres que las notas de lanzamiento sean específicas.
-2.  **Commits Descriptivos**: La IA lee tu mensaje de commit y el diff del código. Cuanto mejor esté estructurado tu código y escrito tu mensaje, mejores serán las notas de lanzamiento.
-3.  **Revisar Releases**: Siempre revisa el archivo generado en `docs/releases/` antes de subir tu nueva versión a producción.
+1.  **Commits Atómicos**: Aunque la herramienta analiza múltiples commits, mantenerlos enfocados ayuda a la IA a generar notas más estructuradas.
+2.  **Consistencia Convencional**: Usa siempre prefijos estándar. Si mezclas `feat` y `fix`, la herramienta elegirá `minor` para asegurar la visibilidad de la nueva funcionalidad.
+3.  **Revisión Final**: Siempre revisa el archivo generado en `docs/releases/` y el cambio de versión antes de desplegar a producción.
+

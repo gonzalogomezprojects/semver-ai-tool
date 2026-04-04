@@ -25,13 +25,14 @@ npx github:gonzalogomezprojects/semver-ai-tool init
 *   **Result**: A `.semver-ai.json` file is created. The tool automatically adds this file to your `.gitignore` to prevent API key leaks.
 
 ### 2. Development & Conventional Commits
-As you develop, you must use the **Conventional Commits** standard for your commit messages. The tool uses the *last commit* to determine the version bump.
+As you develop, you must use the **Conventional Commits** standard for your commit messages. **SemVer AI Tool** analyzes **all commits** since your last release tag to determine the optimal version bump.
 
 | Commit Prefix | SemVer Bump | Description |
 | :--- | :--- | :--- |
 | `fix:` | **Patch** (0.0.x) | Bug fixes. |
 | `feat:` | **Minor** (0.x.0) | New features. |
-| `BREAKING CHANGE:` | **Major** (x.0.0) | Breaking changes (found in footer or as `feat!:`). |
+| `feat!:` / `fix!:` | **Major** (x.0.0) | Breaking changes (using the `!` indicator). |
+| `BREAKING CHANGE:` | **Major** (x.0.0) | Breaking changes found in the commit footer. |
 
 **Example:**
 ```bash
@@ -46,39 +47,39 @@ npx github:gonzalogomezprojects/semver-ai-tool release
 ```
 
 *   **Logic**:
-    1.  **Analysis**: Reads the last commit message.
-    2.  **Versioning**: Calculates if it's a `patch`, `minor`, or `major` bump.
+    1.  **Analysis**: Scans the git history from the **latest tag** to the current state.
+    2.  **Versioning**: Calculates the highest priority bump (`major` > `minor` > `patch`) detected in the history.
     3.  **Bumping**: Updates the `version` field in your `package.json`.
-    4.  **AI Power**: Sends the commit message and the actual code diff to the AI.
+    4.  **AI Power**: Sends the cumulative commit history and total code diff to the AI for synthesis.
     5.  **Documentation**: Generates a professional Markdown file in `docs/releases/`.
+    6.  **Persistence**: Automatically creates a **git commit** and a **git tag** for the new version.
 
 ---
 
 ## 🛠️ Advanced Usage
 
 ### Manual Version Overrides
-If you want to force a specific bump regardless of the commit message, you can pass an argument:
+If you want to force a specific bump regardless of the commit history, you can pass an argument:
 
 ```bash
 # Force a Major version bump
 npx github:gonzalogomezprojects/semver-ai-tool release major
-
-# Force a Minor version bump
-npx github:gonzalogomezprojects/semver-ai-tool release minor
-
-# Force a Patch version bump
-npx github:gonzalogomezprojects/semver-ai-tool release patch
 ```
 
-### Security & Credentials
-The tool stores your Groq API Key in `.semver-ai.json` inside your project root. 
-> [!IMPORTANT]
-> Always ensure `.semver-ai.json` is in your `.gitignore`. The `init` command does this automatically for you.
+### Persistence and Safety
+When a release is successful, the tool:
+1.  Stages `package.json`, `package-lock.json` (if it exists), and the new release notes.
+2.  Commits with the message `chore(release): vX.Y.Z [skip ci]`.
+3.  Tags the commit as `vX.Y.Z`.
+
+> [!TIP]
+> After the command finishes, remember to run `git push --follow-tags` to push your new version to the remote server.
 
 ---
 
 ## 💡 Best Practices
 
-1.  **Atomized Commits**: Try to include a single feature or fix per commit if you want the release notes to be specific.
-2.  **Descriptive Commits**: The AI reads your commit message and the code diff. The better your code is structured and your message is written, the better the release notes will be.
-3.  **Review Releases**: Always check the generated file in `docs/releases/` before pushing your new version to production.
+1.  **Atomic Commits**: Even though the tool analyzes multiple commits, keeping them focused helps the AI generate more detailed and structured notes.
+2.  **Conventional Consistency**: Always use standard prefixes. If you mix `feat` and `fix` in a release cycle, the tool will correctly choose `minor` to ensure no functionality is hidden in a patch.
+3.  **Review Before Pushing**: Always check the generated file in `docs/releases/` and the version change before pushing to production.
+

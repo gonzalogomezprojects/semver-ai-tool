@@ -75,4 +75,3 @@ git tag -a "v${next_version}" -m "Release v${next_version}"
 echo ""
 echo "🎉 Release successful! Version $next_version is now committed and tagged."
 echo "   Don't forget to run 'git push --follow-tags' to share the release."
-

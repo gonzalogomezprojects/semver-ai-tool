@@ -44,7 +44,7 @@ case "$COMMAND" in
         bash "$SEMVER_AI_DIR/src/commands/release.sh" "$@"
         ;;
     version)
-        echo "SemVer AI Tool v1.0.0"
+        echo "SemVer AI Tool v$VERSION (by Sarit Startup)"
         ;;
     help|--help|-h|"")
         show_help

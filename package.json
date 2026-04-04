@@ -1,5 +1,5 @@
 {
-  "name": "semver-ai",
+  "name": "semver-ai-tool",
   "version": "1.3.0",
   "description": "AI-powered CLI for Semantic Versioning and Automated Release Notes using LLaMA 3.3.",
   "main": "src/cli.sh",
@@ -31,7 +31,8 @@
     "groq",
     "llama"
   ],
-  "author": "Gonzalo S. A. Gomez",
+  "author": "Gonzalo S. A. Gomez (Sarit Startups)",
+  "homepage": "https://semveraitool.saritstartups.com.ar/",
   "license": "MIT",
   "engines": {
     "node": ">=16.0.0"

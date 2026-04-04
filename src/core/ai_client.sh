@@ -19,19 +19,19 @@ Generate release notes for version $version.
 - Project: $PROJECT_NAME
 - Primary Author: $AUTHOR_NAME
 - Date of Release: $curr_date
-- Release Intent (SemVer action): $type
+- Overall Level (SemVer action): $type
 
-## Contextual Data
-Commit Message:
+## Contextual Data (All commits since last release)
+Commit History Included in this Release:
 $commit
 
-Code Differences Payload:
+Full Cumulative Code Differences:
 $diff
 
 ## Requirements Output:
 1. Provide valid Markdown format response.
-2. Structure sections: 'Executive Summary', 'Detailed Changes', 'Technical Modules Affected'.
-3. Extract real meaning out of the code differences payload and explain the 'why'.
+2. Structure sections: 'Executive Summary', 'Key Highlights', 'Detailed Technical Changes'.
+3. Synthesize the meaning from the combination of all commits and the full code diff. Explain the cumulative impact.
 4. Do NOT output XML tags like <think>, only the markdown content."
 
     # Construct JSON payload utilizing Node mapping arguments safely

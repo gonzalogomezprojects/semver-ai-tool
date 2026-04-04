@@ -1,24 +1,35 @@
 {
-  "name": "semver-ai-tool",
+  "name": "semver-ai",
   "version": "1.2.0",
-  "description": "Una herramienta CLI con IA para Conventional Commits que automatiza versionado y documentación.",
+  "description": "AI-powered CLI for Semantic Versioning and Automated Release Notes using LLaMA 3.3.",
   "main": "src/cli.sh",
   "bin": {
     "semver-ai": "./src/cli.sh"
   },
+  "files": [
+    "src",
+    "docs",
+    "LICENSE",
+    "README.md",
+    "README.es.md"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "publish:patch": "npm version patch && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:major": "npm version major && npm publish"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SaritStartup/semver-ai-tool.git"
+    "url": "git+https://github.com/gonzalogomezprojects/semver-ai-tool.git"
   },
   "keywords": [
     "semver",
     "ai",
     "conventional-commits",
     "cli",
-    "release"
+    "release",
+    "groq",
+    "llama"
   ],
   "author": "Gonzalo S. A. Gomez",
   "license": "MIT",
@@ -26,3 +37,4 @@
     "node": ">=16.0.0"
   }
 }
+

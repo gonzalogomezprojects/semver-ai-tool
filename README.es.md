@@ -1,46 +1,59 @@
 <p align="center">
-  <img src="src/images/logo-semveraitool-small.png" alt="SemVer AI Tool Logo" width="300">
+  <img src="src/images/logo-semveraitool-small.png" alt="SemVer AI Tool Logo" width="400">
 </p>
 
-# SemVer AI Tool (Español)
+# SemVer AI Tool
 
 [English](./README.md) | **Español**
 
-**SemVer AI Tool** es una herramienta de interfaz de línea de comandos (CLI) de próxima generación que automatiza el versionado semántico y la generación de notas de lanzamiento profesionales utilizando Inteligencia Artificial y Conventional Commits.
+**Automatiza el versionado semántico y genera notas de lanzamiento profesionales con IA en segundos.**
 
 ---
 
-## 🚀 Características
-- **Versionado Semántico Automático**: Detecta `feat:`, `fix:`, y `BREAKING CHANGE:` en tu último commit para actualizar la versión de forma segura.
-- **Notas de Lanzamiento con IA**: Analiza las diferencias de código (diffs) a través de la API de Groq (Llama 3.3) y genera informes técnicos profesionales.
-- **Seguridad Integrada**: Maneja credenciales localmente con auto-protección de `.gitignore` para evitar filtraciones de API Keys.
-- **Multilingüe**: Soporta la generación de documentación tanto en Inglés como en Español.
+SemVer AI Tool es una interfaz de línea de comandos (CLI) de próxima generación que cierra la brecha entre los cambios de código y los lanzamientos profesionales. Utiliza LLaMA 3.3 (vía Groq API) para analizar tu historial de git y explicar el "por qué" y el "qué" detrás de tus actualizaciones.
 
-## 📦 Instalación y Uso (Vía NPX)
-
-Esta herramienta está diseñada al estilo moderno de Shadcn: **cero instalaciones globales**. Puedes ejecutarla en cualquier momento desde tu terminal.
-
-### 1. Inicializar el proyecto
-Ejecuta el asistente interactivo en tu proyecto (te pedirá tu API Key de Groq y nombre de autor):
+## Cómo funciona
+La herramienta se integra directamente en tu flujo de trabajo de git. Analiza **todos los mensajes de commit desde el último tag** utilizando las reglas de Conventional Commits para determinar el siguiente incremento de versión y recopila el `git diff` acumulado. Crea automáticamente un commit de lanzamiento y una etiqueta (tag) por ti.
 
 ```bash
-npx github:gonzalogomezprojects/semver-ai-tool init
+# 1. Haz commit de tus cambios
+git commit -m "feat: implement real-time collaboration"
+
+# 2. Lanza la magia
+npx semver-ai release
 ```
 
-### 2. Generar un Release
-Una vez que hayas hecho tus commits siguiendo la convención, lanza la magia:
-
+## Instalación
+Inicializa tu proyecto con una configuración zero-config:
 ```bash
-npx github:gonzalogomezprojects/semver-ai-tool release
+npx semver-ai init
 ```
 
-## 📚 Documentación
-- **[Guía de Uso y Flujo](./docs/es/guia-uso.md)**: Aprende cómo utilizar la herramienta correctamente y entiende el flujo.
-- **[Arquitectura Técnica](./docs/es/technical-architecture.md)**: Para una comprensión profunda de la lógica interna.
+## Qué hace
+*   **Versionado Automático**: Detecta `feat:`, `fix:`, y `!:` para actualizar de forma segura tu `package.json`.
+*   **Conciencia de Contexto con IA**: Utiliza Modelos de Lenguaje Extensos (LLMs) para interpretar múltiples diffs de código y generar documentación técnica.
+*   **Persistencia en Git**: Gestiona automáticamente el `git commit` y `git tag` para un seguimiento de versiones consistente.
+*   **Seguridad Primero**: Almacena tus credenciales de API localmente en `.semver-ai.json` (agregado automáticamente a `.gitignore`).
+*   **Soporte Multilingüe**: Totalmente localizado en Inglés y Español.
+
+## Referencia de la CLI
+
+| Comando | Argumento | Descripción |
+| :--- | :--- | :--- |
+| `init` | - | Inicia el asistente interactivo para configurar las API keys y preferencias. |
+| `release` | `patch`\|`minor`\|`major` | (Opcional) Fuerza un incremento de versión específico, omitiendo la autodetección. |
+
+## Documentación
+*   **[Guía de Uso y Flujo](./docs/es/guia-uso.md)**: Profundiza en la integración de la herramienta.
+*   **[Arquitectura Técnica](./docs/es/technical-architecture.md)**: Explora la lógica interna de la CLI.
 
 ## 👨‍💻 Autor
 Desarrollado con ❤️ por **Gonzalo S. A. Gómez** en [Sarit Startup](https://saritstartup.com.ar/).  
 Conéctate conmigo en [LinkedIn](https://www.linkedin.com/in/gonzalogomezprojects/).
 
-## 📄 Licencia
-MIT License
+## Enlaces
+*   [Perfil de LinkedIn](https://www.linkedin.com/in/gonzalogomezprojects/)
+*   [Repositorio de GitHub](https://github.com/gonzalogomezprojects/semver-ai-tool)
+
+## Licencia
+[MIT](./LICENSE) © Gonzalo Gomez

@@ -32,7 +32,7 @@
     "llama"
   ],
   "author": "Gonzalo S. A. Gomez (Sarit Startups)",
-  "homepage": "https://semveraitool.saritstartups.com.ar/",
+  "homepage": "https://semver-ai-tool-web.vercel.app/",
   "license": "MIT",
   "engines": {
     "node": ">=16.0.0"

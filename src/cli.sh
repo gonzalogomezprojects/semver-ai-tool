@@ -24,12 +24,55 @@ COMMAND="$1"
 shift || true
 
 show_help() {
-    echo "Usage: semver-ai <command>"
+    # Detect language from config if exists, fallback to en
+    local lang="en"
+    if [ -f ".semver-ai.json" ]; then
+        lang=$(node -p "require('./.semver-ai.json').release_language || 'en'")
+    fi
+
+    if [ "$lang" = "es" ]; then
+        echo "🚀 SemVer AI Tool v$VERSION"
+        echo "Automatiza el versionado semántico y genera notas de lanzamiento profesionales con IA."
+        echo ""
+        echo "USO:"
+        echo "  semver-ai <comando> [opciones]"
+        echo ""
+        echo "COMANDOS:"
+        echo "  init              Inicializa el proyecto y configura la API Key de Groq."
+        echo "  release           Analiza commits, sube la versión y genera documentación."
+        echo "  help              Muestra esta interfaz de ayuda detallada."
+        echo ""
+        echo "GUÍA DE COMMITS (SemVer):"
+        echo "  fix: ...          Incrementa PATCH (v1.0.1) -> Correcciones internas."
+        echo "  feat: ...         Incrementa MINOR (v1.1.0) -> Nuevas funcionalidades."
+        echo "  BREAKING CHANGE:  Incrementa MAJOR (v2.0.0) -> Cambios incompatibles."
+        echo ""
+        echo "TIP PARA BASH/ZSH:"
+        echo "  Si usas 'feat!: ...', envuélvelo en comillas simples para evitar errores:"
+        echo "  git commit -m 'feat!: mi cambio radical'"
+    else
+        echo "🚀 SemVer AI Tool v$VERSION"
+        echo "Automate semantic versioning and generate professional AI release notes."
+        echo ""
+        echo "USAGE:"
+        echo "  semver-ai <command> [options]"
+        echo ""
+        echo "COMMANDS:"
+        echo "  init              Initialize project and configure Groq API Key."
+        echo "  release           Analyze commits, bump version, and generate documentation."
+        echo "  help              Show this detailed help interface."
+        echo ""
+        echo "COMMIT GUIDE (SemVer):"
+        echo "  fix: ...          Bumps PATCH (v1.0.1) -> Internal fixes."
+        echo "  feat: ...         Bumps MINOR (v1.1.0) -> New features."
+        echo "  BREAKING CHANGE:  Bumps MAJOR (v2.0.0) -> Incompatible changes."
+        echo ""
+        echo "BASH/ZSH TIP:"
+        echo "  When using 'feat!: ...', wrap it in single quotes to avoid shell errors:"
+        echo "  git commit -m 'feat!: radical change'"
+    fi
     echo ""
-    echo "Commands:"
-    echo "  init      Initialize the project. Creates a .semver-ai.json configuration."
-    echo "  release   Bump the version and use AI to generate release documentation."
-    echo "  help      Show this help interface."
+    echo "Documentation: https://github.com/gonzalogomezprojects/semver-ai-tool"
 }
 
 case "$COMMAND" in

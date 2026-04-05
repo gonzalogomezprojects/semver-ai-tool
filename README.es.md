@@ -30,9 +30,10 @@ npx semver-ai init
 ```
 
 ## Qué hace
-*   **Versionado Automático**: Detecta `feat:`, `fix:`, y `!:` para actualizar de forma segura tu `package.json`.
+*   **Versionado Automático**: Detecta `feat:`, `fix:`, y `BREAKING CHANGE:` para actualizar de forma segura tu `package.json`.
+*   **CLI Interactiva**: Te permite elegir si generar documentación de IA y realizar el `git push --follow-tags` automáticamente.
 *   **Conciencia de Contexto con IA**: Utiliza Modelos de Lenguaje Extensos (LLMs) para interpretar múltiples diffs de código y generar documentación técnica.
-*   **Persistencia en Git**: Gestiona automáticamente el `git commit` y `git tag` para un seguimiento de versiones consistente.
+*   **Persistencia en Git**: Gestiona automáticamente el `git commit`, `git tag` y el `push` opcional.
 *   **Seguridad Primero**: Almacena tus credenciales de API localmente en `.semver-ai.json` (agregado automáticamente a `.gitignore`).
 *   **Soporte Multilingüe**: Totalmente localizado en Inglés y Español.
 
@@ -44,6 +45,7 @@ npx semver-ai init
 | `release` | `patch`\|`minor`\|`major` | (Opcional) Fuerza un incremento de versión específico, omitiendo la autodetección. |
 
 ## Documentación
+*   **[Novedades v1.5.0](./docs/es/novedades_v1.5.0.md)**: Lee qué hay de nuevo y cómo usarlo en equipo.
 *   **[Guía de Uso y Flujo](./docs/es/guia-uso.md)**: Profundiza en la integración de la herramienta.
 *   **[Arquitectura Técnica](./docs/es/technical-architecture.md)**: Explora la lógica interna de la CLI.
 

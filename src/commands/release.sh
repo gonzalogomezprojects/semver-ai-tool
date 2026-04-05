@@ -53,25 +53,41 @@ next_version="${next_version#v}"
 
 echo "  -> $current_version  ==>  $next_version"
 
-echo "[4/5] Generating AI Documentation..."
-release_notes=$(generate_release_notes "$next_version" "$bump_type" "$commit_history" "$git_diff")
+echo "[4/5] Versioning and Documentation..."
+read -p "  -> Generate AI documentation/release notes? [Y/n]: " gen_docs
+gen_docs=${gen_docs:-y}
 
-# Save document
-mkdir -p "$PROJECT_DOCS_DIR"
-now=$(date +"%d-%B-%Y_%H-%M")
-doc_file="$PROJECT_DOCS_DIR/release_v${next_version}_${now}.md"
-echo "$release_notes" > "$doc_file"
-echo "  -> Release notes written to: $doc_file"
+if [[ "$gen_docs" =~ ^[Yy]$ ]]; then
+    echo "     Generating release notes..."
+    release_notes=$(generate_release_notes "$next_version" "$bump_type" "$commit_history" "$git_diff")
+    
+    # Save document
+    mkdir -p "$PROJECT_DOCS_DIR"
+    now=$(date +"%d-%B-%Y_%H-%M")
+    doc_file="$PROJECT_DOCS_DIR/release_v${next_version}_${now}.md"
+    echo "$release_notes" > "$doc_file"
+    echo "     -> Release notes written to: $doc_file"
+else
+    echo "     -> Skipping documentation generation."
+    doc_file=""
+fi
 
 echo "[5/5] Persisting changes to Git..."
-# Stage changes: package.json and the new release note
+# Stage changes: package.json and the new release note (if any)
 git add package.json
 if [ -f "package-lock.json" ]; then git add package-lock.json; fi
-git add "$doc_file"
+[ -n "$doc_file" ] && git add "$doc_file"
 
 git commit -m "chore(release): v${next_version} [skip ci]"
 git tag -a "v${next_version}" -m "Release v${next_version}"
 
 echo ""
-echo "🎉 Release successful! Version $next_version is now committed and tagged."
-echo "   Don't forget to run 'git push --follow-tags' to share the release."
+echo "🎉 Release local successful! Version $next_version committed and tagged."
+
+read -p "🚀 Do you want to push changes and tags to remote? [y/N]: " do_push
+if [[ "$do_push" =~ ^[Yy]$ ]]; then
+    git push --follow-tags
+    echo "✅ Pushed to remote."
+else
+    echo "👋 Release kept local. Run 'git push --follow-tags' whenever you're ready."
+fi

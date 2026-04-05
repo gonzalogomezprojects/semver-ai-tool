@@ -9,10 +9,10 @@ get_last_tag() {
 get_commits_since_tag() {
     local tag="$1"
     if [ -z "$tag" ]; then
-        # No tag yet, get all commits
-        git log --format="%s"
+        # No tag yet, get all commits (Subject + Body)
+        git log --format="%B"
     else
-        git log "$tag..HEAD" --format="%s"
+        git log "$tag..HEAD" --format="%B"
     fi
 }
 
@@ -30,16 +30,23 @@ determine_bump_type() {
     local messages="$1"
     local highest_bump="none"
     
-    # Process each line of the messages
+    # Process the entire messages (could be multi-line for a single commit)
+    # We'll split by a delimiter or just grep the whole block for patterns
+    # But let's keep it robust. A single commit with BREAKING CHANGE should trigger Major.
+    
+    # 1. Detection for Major (Breaking Changes)
+    # Standards: Now focusing on 'BREAKING CHANGE:' in any part of the commit message (as requested)
+    if echo "$messages" | grep -qiE "BREAKING[ -]CHANGE:"; then
+        echo "major"
+        return
+    fi
+
+    # Process each line for minor/patch (these usually come from the subject line)
     while IFS= read -r line; do
         current_line_bump="none"
         
-        # 1. Detection for Major (Breaking Changes)
-        # Standards: 'feat!:', 'fix!:', or 'BREAKING CHANGE:' in body/footer
-        if echo "$line" | grep -qiE "^(feat|fix|chore|docs|style|refactor|perf|test)(\(.*\))?!:" || echo "$line" | grep -q "BREAKING CHANGE:"; then
-            current_line_bump="major"
         # 2. Detection for Minor (Features)
-        elif echo "$line" | grep -qiE "^(feat|feature)(\(.*\))?:"; then
+        if echo "$line" | grep -qiE "^(feat|feature)(\(.*\))?:"; then
             current_line_bump="minor"
         # 3. Detection for Patch (Fixes and others)
         elif echo "$line" | grep -qiE "^(fix|chore|docs|style|refactor|perf|test)(\(.*\))?:"; then

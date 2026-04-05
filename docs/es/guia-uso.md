@@ -31,7 +31,6 @@ Mientras desarrollas, debes usar el estándar de **Conventional Commits** para t
 | :--- | :--- | :--- |
 | `fix:` | **Patch** (0.0.x) | Corrección de errores. |
 | `feat:` | **Minor** (0.x.0) | Nuevas funcionalidades. |
-| `feat!:` / `fix!:` | **Major** (x.0.0) | Cambios que rompen compatibilidad (con indicador `!`). |
 | `BREAKING CHANGE:` | **Major** (x.0.0) | Cambios que rompen la compatibilidad en el cuerpo del commit. |
 
 **Ejemplo:**
@@ -54,7 +53,9 @@ npx github:gonzalogomezprojects/semver-ai-tool release
     5.  **Documentación**: Genera un archivo Markdown en `docs/releases/`.
     6.  **Persistencia**: Crea automáticamente un **commit de git** y un **tag de versión**.
 
----
+6.  **Interacción**:
+    -   Te preguntará si quieres generar la documentación de IA.
+    -   Te preguntará si quieres hacer `git push --follow-tags` automáticamente.
 
 ## 🛠️ Uso Avanzado
 
@@ -72,8 +73,7 @@ Al finalizar una release con éxito, la herramienta:
 2.  Realiza un commit con el mensaje `chore(release): vX.Y.Z [skip ci]`.
 3.  Etiqueta (tag) el commit como `vX.Y.Z`.
 
-> [!TIP]
-> Tras el comando, recuerda ejecutar `git push --follow-tags` para subir la nueva versión a tu repositorio remoto.
+> Tras el comando, la herramienta te ofrecerá realizar el `git push --follow-tags` automáticamente para subir la nueva versión a tu repositorio remoto.
 
 ---
 

@@ -40,6 +40,7 @@ show_help() {
         echo "COMANDOS:"
         echo "  init              Inicializa el proyecto y configura la API Key de Groq."
         echo "  release           Analiza commits, sube la versión y genera documentación."
+        echo "  update            Instrucciones para actualizar a la última versión."
         echo "  help              Muestra esta interfaz de ayuda detallada."
         echo ""
         echo "GUÍA DE COMMITS (SemVer):"
@@ -60,6 +61,7 @@ show_help() {
         echo "COMMANDS:"
         echo "  init              Initialize project and configure Groq API Key."
         echo "  release           Analyze commits, bump version, and generate documentation."
+        echo "  update            Instructions to update to the latest version."
         echo "  help              Show this detailed help interface."
         echo ""
         echo "COMMIT GUIDE (SemVer):"
@@ -88,6 +90,18 @@ case "$COMMAND" in
         ;;
     version)
         echo "SemVer AI Tool v$VERSION (by Sarit Startup)"
+        ;;
+    update)
+        echo "🚀 Actualizando SemVer AI Tool..."
+        echo ""
+        echo "Si instalaste globalmente, usa:"
+        echo "  npm install -g github:gonzalogomezprojects/semver-ai-tool"
+        echo ""
+        echo "Si usas npx, simplemente vuelve a ejecutar:"
+        echo "  npx github:gonzalogomezprojects/semver-ai-tool <comando>"
+        echo ""
+        echo "Para ver la versión más reciente en GitHub:"
+        echo "  https://github.com/gonzalogomezprojects/semver-ai-tool"
         ;;
     help|--help|-h|"")
         show_help

@@ -26,6 +26,10 @@ Hemos simplificado el nombre del comando para que sea más corto y rápido de es
 - **`npx semver-ai <comando>`**
 - O simplemente **`semver-ai <comando>`** si lo instalaste de forma global.
 
+### 🔄 Mantenimiento y Versión
+- **Ver versión:** Usa `semver-ai --version` o `semver-ai -v`.
+- **Actualizar:** Usa el nuevo comando **`semver-ai update`** para ver las instrucciones de actualización a la última versión disponible.
+
 ---
 
 ## 👤 Flujo para un Solo Desarrollador (Solo Dev)

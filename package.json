@@ -1,6 +1,6 @@
 {
   "name": "semver-ai-tool",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "AI-powered CLI for Semantic Versioning and Automated Release Notes using LLaMA 3.3.",
   "main": "src/cli.sh",
   "bin": {

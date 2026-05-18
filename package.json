@@ -48,9 +48,6 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "publishConfig": {
-    "provenance": true
-  },
   "security": {
     "url": "https://github.com/gonzalogomezprojects/semver-ai-tool/security/advisories/new"
   }

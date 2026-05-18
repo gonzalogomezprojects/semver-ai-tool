@@ -2,6 +2,7 @@
 set -e
 
 CONFIG_FILE=".semver-ai.json"
+ENV_FILE=".semver-ai.env"
 
 if [ -f "$CONFIG_FILE" ]; then
     echo "⚠️  The project is already initialized ($CONFIG_FILE exists)."
@@ -11,6 +12,13 @@ if [ -f "$CONFIG_FILE" ]; then
         echo "Aborted."
         exit 0
     fi
+fi
+
+# Check for existing .env file
+if [ -f "$ENV_FILE" ]; then
+    echo "⚠️  Found existing $ENV_FILE (API credentials)."
+    printf "Do you want to update the API key? (y/n): "
+    read update_env
 fi
 
 echo ""
@@ -49,7 +57,6 @@ echo "🧠 Do you want to integrate AI to generate professional release notes? (
 printf "> "
 read want_ai
 
-groq_api_key=""
 groq_model="llama-3.3-70b-versatile"
 DEFAULT_GROQ_URL="https://api.groq.com/openai/v1/chat/completions"
 
@@ -61,20 +68,27 @@ if [[ "$want_ai" =~ ^[Yy]$ ]]; then
     if [ -z "$groq_api_key" ]; then
         echo "⚠️  No key provided. Continuing in Local Mode."
     else
-        echo "✅ AI mode enabled using Groq API."
+        # Create .env file with secure permissions (owner only)
+        cat <<EOF > "$ENV_FILE"
+# SemVer AI Tool - Private Credentials (DO NOT COMMIT)
+GROQ_API_KEY=$groq_api_key
+GROQ_MODEL=$groq_model
+GROQ_URL=$DEFAULT_GROQ_URL
+EOF
+        chmod 600 "$ENV_FILE"
+        echo "✅ AI mode enabled. Credentials stored securely in $ENV_FILE (600 permissions)."
     fi
 else
     echo "🏠 Continuing in Local Mode (No-AI required)."
 fi
 
-# 3. Create JSON Configuration
+# 3. Create JSON Configuration (public config only - no secrets)
 cat <<EOF > "$CONFIG_FILE"
 {
   "project_name": "$project_name",
   "author_name": "$author_name",
   "release_language": "$release_lang",
   "docs_dir": "$docs_dir",
-  "groq_api_key": "$groq_api_key",
   "groq_model": "$groq_model",
   "groq_url": "$DEFAULT_GROQ_URL",
   "tech_docs_url": "https://github.com/gonzalogomezprojects/semver-ai-tool/blob/main/docs/${release_lang}/technical-architecture.md"
@@ -87,10 +101,17 @@ if [ ! -f "$GITIGNORE" ]; then touch "$GITIGNORE"; fi
 
 if ! grep -q "$CONFIG_FILE" "$GITIGNORE"; then
     echo "" >> "$GITIGNORE"
-    echo "# SemVer AI Tool Configuration" >> "$GITIGNORE"
+    echo "# SemVer AI Tool Configuration (Public)" >> "$GITIGNORE"
     echo "$CONFIG_FILE" >> "$GITIGNORE"
     git rm --cached "$CONFIG_FILE" > /dev/null 2>&1 || true
     echo "✅ Applied security: $CONFIG_FILE added to $GITIGNORE."
+fi
+
+# Add .env to gitignore (always, even if file doesn't exist yet)
+if ! grep -q "$ENV_FILE" "$GITIGNORE"; then
+    echo "" >> "$GITIGNORE"
+    echo "# SemVer AI Tool Credentials (Private - NEVER commit)" >> "$GITIGNORE"
+    echo "$ENV_FILE" >> "$GITIGNORE"
 fi
 
 echo ""
@@ -102,6 +123,22 @@ if [ -z "$groq_api_key" ]; then
     echo "   Mode: 🏠 Local (Notes without AI)"
 else
     echo "   Mode: 🧠 AI-Powered (Professional notes)"
+    echo ""
+    echo "🔐 SECURITY: API credentials stored in $ENV_FILE (mode 600)"
 fi
 echo ""
+
+# CI/CD Guide
+echo "═══════════════════════════════════════════════════════════════"
+echo "  CI/CD Setup (GitHub Actions / GitLab CI)"
+echo "═══════════════════════════════════════════════════════════════"
+echo "  Add these secrets in your CI settings:"
+echo "    - GROQ_API_KEY: your Groq API key"
+echo ""
+echo "  In your workflow, the tool will auto-detect CI env vars:"
+echo "    env:"
+echo "      GROQ_API_KEY: \${{ secrets.GROQ_API_KEY }}"
+echo "═══════════════════════════════════════════════════════════════"
+echo ""
+
 echo "You're all set! Run 'semver-ai release' and start versioning your project."

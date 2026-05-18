@@ -14,9 +14,20 @@
     "README.es.md"
   ],
   "scripts": {
+    "test": "node tests/integration.test.js && node tests/verify-security.test.js",
+    "test:int": "node tests/integration.test.js",
+    "test:security": "node tests/verify-security.test.js",
+    "test:bats": "node node_modules/bats/bin/bats tests/",
+    "audit": "npm audit",
+    "audit:fix": "npm audit fix",
+    "sbom": "npm-sbom -o SBOM.md",
+    "sbom:json": "npm-sbom -o SBOM.json --output-format cyclonedx-json",
     "publish:patch": "npm version patch && npm publish",
     "publish:minor": "npm version minor && npm publish",
     "publish:major": "npm version major && npm publish"
+  },
+  "devDependencies": {
+    "bats-core": "^1.10.0"
   },
   "repository": {
     "type": "git",
@@ -36,5 +47,11 @@
   "license": "MIT",
   "engines": {
     "node": ">=16.0.0"
+  },
+  "publishConfig": {
+    "provenance": true
+  },
+  "security": {
+    "url": "https://github.com/gonzalogomezprojects/semver-ai-tool/security/advisories/new"
   }
 }

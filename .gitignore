@@ -1,9 +1,13 @@
 # Node
 node_modules/
 npm-debug.log
+package-lock.json
 
-# Tool Configuration (contains sensitive API Key)
-.semver-ai.json
+# Tool Configuration - Credentials (NEVER commit these)
+.semver-ai.env
+
+# Tool Configuration - Public (SAFE to commit)
+# .semver-ai.json (this file is public, no secrets)
 
 # Credentials legacy
 .semver-ai/

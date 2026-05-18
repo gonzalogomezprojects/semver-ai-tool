@@ -1,0 +1,10 @@
+{
+  "project_name": "SemverAiTool",
+  "author_name": "GOnzalo",
+  "release_language": "es",
+  "docs_dir": "docs/release",
+  "groq_api_key": "",
+  "groq_model": "llama-3.3-70b-versatile",
+  "groq_url": "https://api.groq.com/openai/v1/chat/completions",
+  "tech_docs_url": "https://github.com/gonzalogomezprojects/semver-ai-tool/blob/main/docs/es/technical-architecture.md"
+}

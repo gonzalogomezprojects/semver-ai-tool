@@ -4,13 +4,16 @@ set -e
 # CLI Entry Point
 # Follows the Command Pattern by delegating duties to specific command scripts.
 
+# Load styles for help output
+source "$SEMVER_AI_DIR/src/core/styles.sh" 2>/dev/null || true
+
 # Calculate the actual BASE path of the tool
 # This logic is robust for both global npm installs and temporary npx runs
 SOURCE="${BASH_SOURCE[0]}"
 while [ -L "$SOURCE" ]; do # check if it's a symlink
   DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
   SOURCE=$(readlink "$SOURCE")
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" 
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 done
 DIR_OF_CLI_SH=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
 
@@ -30,56 +33,57 @@ show_help() {
         lang=$(node -p "require('./.semver-ai.json').release_language || 'en'")
     fi
 
+    echo ""
+    echo "${MAGENTA}${BOLD}◈ SemVer AI Tool v$VERSION${RESET}"
+    echo "${DIM}Automate semantic versioning + AI-powered release notes${RESET}"
+    echo ""
+
     if [ "$lang" = "es" ]; then
-        echo "🚀 SemVer AI Tool v$VERSION"
-        echo "Automatiza el versionado semántico y genera notas de lanzamiento profesionales con IA."
+        print_divider
         echo ""
-        echo "USO:"
-        echo "  semver-ai <comando> [opciones]"
+        print_arrow "init           Inicializar proyecto y configurar API"
+        print_arrow "release        Analizar commits → bump → generar docs"
+        print_arrow "bump           Bump manual sin generar docs"
+        print_arrow "status         Ver estado actual (versión, próximo bump)"
+        print_arrow "doctor         Diagnosticar problemas de configuración"
+        print_arrow "config         Ver/editar configuración"
+        print_arrow "guide          Guía de aprendizaje (semver, commits)"
+        print_arrow "update         Instrucciones de actualización"
         echo ""
-        echo "COMANDOS:"
-        echo "  init              Inicializa el proyecto y configura la API Key de Groq."
-        echo "  release           Analiza commits, sube la versión y genera documentación."
-        echo "  update            Instrucciones para actualizar a la última versión."
-        echo "  help              Muestra esta interfaz de ayuda detallada."
+        print_divider
         echo ""
-        echo "GUÍA DE COMMITS (SemVer):"
-        echo "  fix: ...          Incrementa PATCH (v1.0.1) -> Correcciones internas."
-        echo "  feat: ...         Incrementa MINOR (v1.1.0) -> Nuevas funcionalidades."
-        echo "  BREAKING CHANGE:  Incrementa MAJOR (v2.0.0) -> Cambios incompatibles."
-        echo ""
-        echo "TIP PARA BASH/ZSH:"
-        echo "  Si usas 'feat!: ...', envuélvelo en comillas simples para evitar errores:"
-        echo "  git commit -m 'feat!: mi cambio radical'"
+        echo "${CYAN}Guía de Commits (SemVer):${RESET}"
+        print_bullet "fix: ...       → PATCH (v1.0.1) ${GRAY}correcciones${RESET}"
+        print_bullet "feat: ...      → MINOR (v1.1.0) ${GRAY}nuevas features${RESET}"
+        print_bullet "BREAKING ...   → MAJOR (v2.0.0) ${GRAY}cambios breaking${RESET}"
     else
-        echo "🚀 SemVer AI Tool v$VERSION"
-        echo "Automate semantic versioning and generate professional AI release notes."
+        print_divider
         echo ""
-        echo "USAGE:"
-        echo "  semver-ai <command> [options]"
+        print_arrow "init           Initialize project and configure API"
+        print_arrow "release        Analyze commits → bump → generate docs"
+        print_arrow "bump           Manual bump without generating docs"
+        print_arrow "status         Show current state (version, next bump)"
+        print_arrow "doctor         Diagnose configuration issues"
+        print_arrow "config         View/edit configuration"
+        print_arrow "guide          Learning guide (semver, commits, workflow)"
+        print_arrow "update         Update instructions"
         echo ""
-        echo "COMMANDS:"
-        echo "  init              Initialize project and configure Groq API Key."
-        echo "  release           Analyze commits, bump version, and generate documentation."
-        echo "  update            Instructions to update to the latest version."
-        echo "  help              Show this detailed help interface."
+        print_divider
         echo ""
-        echo "COMMIT GUIDE (SemVer):"
-        echo "  fix: ...          Bumps PATCH (v1.0.1) -> Internal fixes."
-        echo "  feat: ...         Bumps MINOR (v1.1.0) -> New features."
-        echo "  BREAKING CHANGE:  Bumps MAJOR (v2.0.0) -> Incompatible changes."
-        echo ""
-        echo "BASH/ZSH TIP:"
-        echo "  When using 'feat!: ...', wrap it in single quotes to avoid shell errors:"
-        echo "  git commit -m 'feat!: radical change'"
+        echo "${CYAN}Commit Guide (SemVer):${RESET}"
+        print_bullet "fix: ...       → PATCH (v1.0.1) ${GRAY}bug fixes${RESET}"
+        print_bullet "feat: ...      → MINOR (v1.1.0) ${GRAY}new features${RESET}"
+        print_bullet "BREAKING ...   → MAJOR (v2.0.0) ${GRAY}breaking changes${RESET}"
     fi
     echo ""
-    echo "Documentation: https://github.com/gonzalogomezprojects/semver-ai-tool"
+    print_divider
+    echo "${GRAY}Docs: ${WHITE}https://github.com/gonzalogomezprojects/semver-ai-tool${RESET}"
+    echo ""
 }
 
 case "$COMMAND" in
     "--version"|"-v")
-        echo "SemVer AI Tool v$VERSION"
+        echo "${MAGENTA}SemVer AI Tool${RESET} ${CYAN}v$VERSION${RESET}"
         exit 0
         ;;
     init)
@@ -88,26 +92,44 @@ case "$COMMAND" in
     release)
         bash "$SEMVER_AI_DIR/src/commands/release.sh" "$@"
         ;;
+    bump)
+        bash "$SEMVER_AI_DIR/src/commands/bump.sh" "$@"
+        ;;
+    status)
+        bash "$SEMVER_AI_DIR/src/commands/status.sh" "$@"
+        ;;
+    doctor)
+        bash "$SEMVER_AI_DIR/src/commands/doctor.sh" "$@"
+        ;;
+    config)
+        bash "$SEMVER_AI_DIR/src/commands/config.sh" "$@"
+        ;;
+    guide)
+        bash "$SEMVER_AI_DIR/src/commands/guide.sh" "$@"
+        ;;
     version)
-        echo "SemVer AI Tool v$VERSION (by Sarit Startup)"
+        echo "${MAGENTA}SemVer AI Tool${RESET} ${CYAN}v$VERSION${RESET} ${GRAY}by Sarit Startup${RESET}"
         ;;
     update)
-        echo "🚀 Actualizando SemVer AI Tool..."
         echo ""
-        echo "Si instalaste globalmente, usa:"
-        echo "  npm install -g github:gonzalogomezprojects/semver-ai-tool"
+        echo "${MAGENTA}${BOLD}◈ Update Instructions${RESET}"
+        print_divider
         echo ""
-        echo "Si usas npx, simplemente vuelve a ejecutar:"
-        echo "  npx github:gonzalogomezprojects/semver-ai-tool <comando>"
+        print_arrow "Global install:"
+        print_bullet "npm install -g github:gonzalogomezprojects/semver-ai-tool"
         echo ""
-        echo "Para ver la versión más reciente en GitHub:"
-        echo "  https://github.com/gonzalogomezprojects/semver-ai-tool"
+        print_arrow "npx (no install):"
+        print_bullet "npx github:gonzalogomezprojects/semver-ai-tool <command>"
+        echo ""
+        print_arrow "Latest version:"
+        print_bullet "https://github.com/gonzalogomezprojects/semver-ai-tool/releases"
+        echo ""
         ;;
     help|--help|-h|"")
         show_help
         ;;
     *)
-        echo "Unknown command: $COMMAND"
+        echo "${RED}Unknown command: $COMMAND${RESET}"
         echo ""
         show_help
         exit 1

@@ -1,0 +1,22 @@
+# Dependabot configuration
+# Auto-update dependencies
+
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    reviewers:
+      - gonzalogomezprojects
+    labels:
+      - "dependencies"
+      - "security"
+
+  # Enable for GitHub Actions updates too
+  # - package-ecosystem: "github-actions"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"
